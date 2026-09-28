@@ -389,15 +389,15 @@ class _LedgerPageState extends State<LedgerPage>{
               onChanged:(v)=>setState(()=>search=v),style:const TextStyle(color:Colors.black87),
               decoration:InputDecoration(fillColor:Colors.white,filled:true,prefixIcon:const Icon(Icons.search),
                 hintText:'Search Entries',border:OutlineInputBorder(borderRadius:BorderRadius.circular(4),
-                borderSide:BorderSide.none))))),
+                borderSide:BorderSide.none)))),
             Container(width:110,height:56,color:const Color(0xFFDCEBFA),
               child:DropdownButtonHideUnderline(child:DropdownButton<String>(
                 value:filter,isExpanded:true,padding:const EdgeInsets.symmetric(horizontal:12),
                 items:const [DropdownMenuItem(value:'ALL',child:Text('ALL')),
                   DropdownMenuItem(value:'GAVE',child:Text('GAVE')),
                   DropdownMenuItem(value:'GOT',child:Text('GOT'))],
-                onChanged:(v)=>setState(()=>filter=v!))))
-          ])),
+                onChanged:(v)=>setState(()=>filter=v!)))
+          ]),
         Container(color:Colors.white,padding:const EdgeInsets.all(16),
           child:Column(children:[
             Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children:[
@@ -492,7 +492,7 @@ class _LedgerPageState extends State<LedgerPage>{
             final a=double.tryParse(amount.text);
             if(a!=null&&a>0)Navigator.pop(context,true);
           },child:const Text('SAVE')))
-        ]))));
+        ])))));
     if(result==true){
       await widget.repo.addTxn(widget.party.id,desc.text,double.parse(amount.text),type,date,bills);
       setState((){});

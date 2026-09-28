@@ -1,0 +1,35 @@
+name: khatabook_style_accounting
+description: Multi-business Khatabook-style accounting app with customer/supplier ledgers, bill photos, WhatsApp sharing, Excel import/export and Firebase-ready sync.
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  shared_preferences: ^2.3.2
+  image_picker: ^1.1.2
+  share_plus: ^10.0.2
+  file_picker: ^8.1.2
+  excel: ^4.0.6
+  path_provider: ^2.1.4
+  intl: ^0.19.0
+  flutter_contacts: ^1.1.9+2
+  url_launcher: ^6.3.1
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+  cloud_firestore: ^5.4.4
+  firebase_storage: ^12.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/

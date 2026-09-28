@@ -397,7 +397,7 @@ class _LedgerPageState extends State<LedgerPage>{
                   DropdownMenuItem(value:'GAVE',child:Text('GAVE')),
                   DropdownMenuItem(value:'GOT',child:Text('GOT'))],
                 onChanged:(v)=>setState(()=>filter=v!)))
-          ]),
+          ])),
         Container(color:Colors.white,padding:const EdgeInsets.all(16),
           child:Column(children:[
             Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children:[

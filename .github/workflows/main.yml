@@ -15,11 +15,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Find Flutter project
-        run: |
-          echo "Searching for pubspec.yaml..."
-          find . -name pubspec.yaml -print
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -27,13 +22,14 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Locate project
+      - name: Find Flutter project
         id: project
         shell: bash
         run: |
           PROJECT_DIR=$(dirname "$(find . -name pubspec.yaml -print -quit)")
+
           if [ -z "$PROJECT_DIR" ]; then
-            echo "ERROR: pubspec.yaml was not found."
+            echo "ERROR: pubspec.yaml not found"
             exit 1
           fi
 
@@ -41,16 +37,23 @@ jobs:
             PROJECT_DIR="."
           fi
 
-          echo "Flutter project found at: $PROJECT_DIR"
+          echo "Flutter project: $PROJECT_DIR"
           echo "project_dir=$PROJECT_DIR" >> "$GITHUB_OUTPUT"
+
+      - name: Generate Android project
+        working-directory: ${{ steps.project.outputs.project_dir }}
+        run: |
+          flutter create --platforms=android .
 
       - name: Install dependencies
         working-directory: ${{ steps.project.outputs.project_dir }}
-        run: flutter pub get
+        run: |
+          flutter pub get
 
       - name: Build APK
         working-directory: ${{ steps.project.outputs.project_dir }}
-        run: flutter build apk --release
+        run: |
+          flutter build apk --release
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

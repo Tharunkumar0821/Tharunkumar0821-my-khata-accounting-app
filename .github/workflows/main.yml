@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - main
-      - master
 
 jobs:
   build:
@@ -27,45 +26,59 @@ jobs:
         shell: bash
         run: |
           PROJECT_DIR=$(dirname "$(find . -name pubspec.yaml -print -quit)")
-          if [ -z "$PROJECT_DIR" ]; then
-            echo "ERROR: pubspec.yaml not found"
-            exit 1
-          fi
-          if [ "$PROJECT_DIR" = "." ]; then PROJECT_DIR="."; fi
           echo "Flutter project: $PROJECT_DIR"
           echo "project_dir=$PROJECT_DIR" >> "$GITHUB_OUTPUT"
 
       - name: Generate Android project
         working-directory: ${{ steps.project.outputs.project_dir }}
-        run: flutter create --platforms=android .
+        run: |
+          flutter create \
+            --platforms=android \
+            --no-pub \
+            .
 
       - name: Install Android SDK 35
-        run: yes | sdkmanager "platforms;android-35" "build-tools;35.0.0"
+        run: |
+          yes | sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
-      - name: Set Android SDK 35
+      - name: Configure Android SDK 35
         working-directory: ${{ steps.project.outputs.project_dir }}
+        shell: bash
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          p = Path('android/app/build.gradle')
+
+          p = Path("android/app/build.gradle")
           s = p.read_text()
-          s = s.replace('compileSdk = flutter.compileSdkVersion', 'compileSdk = 35')
-          s = s.replace('compileSdk flutter.compileSdkVersion', 'compileSdk 35')
+
+          s = s.replace(
+              "compileSdk = flutter.compileSdkVersion",
+              "compileSdk = 35"
+          )
+
+          s = s.replace(
+              "compileSdk flutter.compileSdkVersion",
+              "compileSdk 35"
+          )
+
           p.write_text(s)
-          print('compileSdk updated to 35')
+
+          print("Android compileSdk configured to 35")
           PY
 
       - name: Install dependencies
         working-directory: ${{ steps.project.outputs.project_dir }}
-        run: flutter pub get
+        run: |
+          flutter pub get
 
       - name: Build APK
         working-directory: ${{ steps.project.outputs.project_dir }}
-        run: flutter build apk --release
+        run: |
+          flutter build apk --release
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: my-khata-release-apk
-          path: '**/build/app/outputs/flutter-apk/app-release.apk'
+          path: ${{ steps.project.outputs.project_dir }}/build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error

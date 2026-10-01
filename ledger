@@ -1,0 +1,66 @@
+      <View style={[{
+        paddingHorizontal: space.md, paddingTop: space.md, paddingBottom: space.sm,
+        backgroundColor: c.surface, borderTopWidth: 1, borderTopColor: c.lineSoft,
+      }, elevate(c, 2)]}>
+        {/* Primary actions: what this party's two entry types are called. */}
+        <View style={{ flexDirection: 'row', gap: space.sm, marginBottom: space.sm }}>
+          <Pressable
+            onPress={() => onEntry('gave')} accessibilityRole="button"
+            accessibilityLabel={`Add ${entryLabel('gave', party.type)} entry`}
+            android_ripple={{ color: 'rgba(255,255,255,.2)' }}
+            style={({ pressed }) => [{
+              flex: 1, height: 48, backgroundColor: c.red, borderRadius: radius.md,
+              alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.88 : 1,
+            }, elevate(c, 1)]}>
+            <Text style={{ color: '#fff', fontWeight: '700', fontSize: 15 }}>
+              {entryLabel('gave', party.type)}
+            </Text>
+          </Pressable>
+          <Pressable
+            onPress={() => onEntry('got')} accessibilityRole="button"
+            accessibilityLabel={`Add ${entryLabel('got', party.type)} entry`}
+            android_ripple={{ color: 'rgba(255,255,255,.2)' }}
+            style={({ pressed }) => [{
+              flex: 1, height: 48, backgroundColor: c.green, borderRadius: radius.md,
+              alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.88 : 1,
+            }, elevate(c, 1)]}>
+            <Text style={{ color: '#fff', fontWeight: '700', fontSize: 15 }}>
+              {entryLabel('got', party.type)}
+            </Text>
+          </Pressable>
+        </View>
+
+        {/* Secondary actions. */}
+        <View style={{ flexDirection: 'row', gap: space.sm, alignItems: 'center' }}>
+          <Pressable
+            onPress={doDownload} accessibilityRole="button"
+            style={({ pressed }) => ({
+              flex: 1, height: 42, borderWidth: 1.5, borderColor: c.brand, borderRadius: radius.md,
+              alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: space.xs + 2,
+              opacity: pressed ? 0.8 : 1,
+            })}>
+            <Text style={{ fontSize: 13 }}>{'\uD83D\uDCC4'}</Text>
+            <Text style={{ color: c.brand, fontWeight: '700', fontSize: 14 }}>Statement</Text>
+          </Pressable>
+          {party.phone ? (
+            <Pressable
+              onPress={() => open('tel:' + party.phone)} accessibilityRole="button" accessibilityLabel="Call"
+              style={({ pressed }) => ({
+                width: 42, height: 42, borderRadius: radius.md, borderWidth: 1.5, borderColor: c.brand,
+                alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.8 : 1,
+              })}>
+              <Text style={{ fontSize: 16 }}>{'\uD83D\uDCDE'}</Text>
+            </Pressable>
+          ) : null}
+          <Pressable
+            onPress={doShare} accessibilityRole="button"
+            style={({ pressed }) => [{
+              flex: 1, height: 42, backgroundColor: c.brand, borderRadius: radius.md,
+              alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: space.xs + 2,
+              opacity: pressed ? 0.88 : 1,
+            }, elevate(c, 1)]}>
+            <Text style={{ fontSize: 13 }}>{'\uD83D\uDCAC'}</Text>
+            <Text style={{ color: c.brandInk, fontWeight: '700', fontSize: 14 }}>Send</Text>
+          </Pressable>
+        </View>
+      </View>
